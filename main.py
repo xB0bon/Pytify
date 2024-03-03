@@ -104,11 +104,11 @@ def update_progress():
             print(listbox.size())
             if listbox.curselection():
                 aktualny = int(listbox.curselection()[0])
-                listbox.selection_clear(0, END)  # Wyczyść zaznaczenie wszystkich linii
+                listbox.selection_clear(0, END)
                 if aktualny + 1 < listbox.size():
-                    listbox.selection_set(aktualny + 1)  # Zaznacz następną linię
+                    listbox.selection_set(aktualny + 1)
                 else:
-                    listbox.selection_set(0)  # Jeśli przekroczyliśmy koniec listy, zaznacz pierwszą linijkę
+                    listbox.selection_set(0)
 
                 music_play = True
                 play()
