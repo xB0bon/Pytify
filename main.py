@@ -40,7 +40,6 @@ def nastepna():
 def openfolder():
     global folder
     folder = filedialog.askdirectory()
-    print(folder)
     if folder:
         listbox.delete(0, END)
         list_files = os.listdir(folder)
@@ -73,9 +72,15 @@ def play():
                 piosenka = pygame.mixer.Sound(f'{folder}/{nazwa_pliku}')
                 mixer.music.load(f'{folder}/{nazwa_pliku}')
                 mixer.music.play()
-                print(listbox.curselection()[0])
-                dlugosc = round(piosenka.get_length(), 1)
+                sound_get_ms = piosenka.get_length()
+                current_time_min = round(sound_get_ms) // 60  # Oblicz minutę
+                current_time_sec = (round(sound_get_ms) % 60)  # Oblicz sekundy
+
+                # Sformatuj czas
+                formatted_time = '{:02d}:{:02d}'.format(current_time_min, current_time_sec)
+                dlugosc = round(sound_get_ms, 1)
                 dlugosc1.set(str(dlugosc))
+                dlugosc2.set(formatted_time)
                 czas_muzyki.config(to=dlugosc)
                 nazwa_utworu.set(f'Utwór: {nazwa_pliku}')
                 update_progress()
@@ -98,10 +103,15 @@ def update_progress():
     volume = glosnosc.get() / 10
     mixer.music.set_volume(volume)
     if not music_play:
-        current_time = pygame.mixer.music.get_pos() / 1000
-        czas.set(round(current_time, 1))
-        if str(round(current_time, 1) + 0.1) == dlugosc1.get():
-            print(listbox.size())
+        current_time = pygame.mixer.music.get_pos()
+        current_time_min = current_time // 60000  # Oblicz minutę
+        current_time_sec = (current_time % 60000) // 1000  # Oblicz sekundy
+
+        # Utwórz ładnie sformatowany czas
+        formatted_time = '{:02d}:{:02d}'.format(current_time_min, current_time_sec)
+        czas_now.set(formatted_time)
+        czas.set(round(current_time / 1000, 1))
+        if str(round(current_time/ 1000, 1) + 0.1) == dlugosc1.get():
             if listbox.curselection():
                 aktualny = int(listbox.curselection()[0])
                 listbox.selection_clear(0, END)
@@ -149,13 +159,18 @@ Button(button_frame, command=nastepna, image=nastepny, bg='black', bd=0, highlig
        activebackground="#1d1d1d").grid(
     row=0, column=2)
 
+czas_now = StringVar(window)
+Label(window, textvariable=czas_now, bg='black', fg='white', font=('arial', 12)).place(x=5, y=375)
+
+
 czas = DoubleVar(window, value=0)
 czas_muzyki = Scale(window, from_=0.0, to=0.01, resolution=0.01, orient=HORIZONTAL, variable=czas, length=500,
-                    bg='black', troughcolor='gray', sliderlength=20, highlightthickness=0, fg='white')
+                    bg='black', troughcolor='gray', sliderlength=20, highlightthickness=0, fg='white', showvalue=False, state='disabled')
 czas_muzyki.pack(pady=10)
 dlugosc1 = StringVar(window)
-czas_max = Label(window, textvariable=dlugosc1, bg='black', fg='white')
-czas_max.pack(anchor=E)
+dlugosc2 = StringVar(window)
+czas_max = Label(window, textvariable=dlugosc2, bg='black', fg='white', font=('arial', 12))
+czas_max.place(x=550, y=375)
 
 glosnosc_frame = Frame(window, bg='black')
 glosnosc_frame.pack(anchor=W)
