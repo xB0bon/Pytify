@@ -116,6 +116,7 @@ def update_progress():
                 aktualny = int(listbox.curselection()[0])
                 listbox.selection_clear(0, END)
                 if aktualny + 1 < listbox.size():
+                    current_time = 0
                     listbox.selection_set(aktualny + 1)
                 else:
                     listbox.selection_set(0)
