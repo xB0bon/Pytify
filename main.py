@@ -124,6 +124,8 @@ def update_progress():
 
 window = Tk()
 window.geometry("600x500")
+window.minsize(600, 500)
+window.maxsize(600, 500)
 window.config(bg='black')
 frame = Frame(window)
 frame.config(bg='#2a2a2a')
