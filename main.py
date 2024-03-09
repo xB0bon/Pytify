@@ -123,6 +123,7 @@ def update_progress():
 
 
 window = Tk()
+window.title('Pytify')
 window.geometry("600x500")
 window.minsize(600, 500)
 window.maxsize(600, 500)
