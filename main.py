@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import filedialog
 from pygame import mixer
 import pygame
+import PIL.Image
 
 nazwa_pliku = ''
 numer = None
